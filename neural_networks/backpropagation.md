@@ -1,0 +1,6 @@
+Backpropagation
+===============
+
+
+?stochastic gradient descent
+
