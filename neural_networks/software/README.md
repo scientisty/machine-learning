@@ -1,8 +1,4 @@
-Neural Network Tools
-====================
-
-
-
+# Neural Network Tools
 
 http://www.aidanf.net/posts/a-list-of-python-software-for-deep-learning
 
