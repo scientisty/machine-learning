@@ -1,12 +1,11 @@
-Caffe
-=====
+# Caffe
 
+## Using Caffe
 
+## Using PyCaffe
 
+    caffe.set_mode_cpu()
 
-Installation
-------------
+Main interfaces are Net and Solver.
 
-- [Installing Caffe the right way](http://installing-caffe-the-right-way.wikidot.com/)
-
-- [Deepdream Installation](https://gist.github.com/robertsdionne/f58a5fc6e5d1d5d2f798) script
+Find example ipynb in caffe/examples
