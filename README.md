@@ -1,41 +1,23 @@
-Machine Learning
-================
+# Machine Learning
 
+Repo covering the theory and practice of machine learning.
 
----
-
-Links
------
+## Links
 
 - [Awesome Machine Learning](https://github.com/josephmisiti/awesome-machine-learning)
 - [A Course in Machine Learning (with book)](http://ciml.info/)
 - [Machine Learning, Neural and Statistical Classification (D. Michie, D.J. Spiegelhalter, C.C. Taylor (eds))](http://www1.maths.leeds.ac.uk/~charles/statlog/)
 
+## Neural Networks
 
+## Support Vector Machines
 
-
-
-
-
-Neural Networks
----------------
-
-
-Support Vector Machines
------------------------
-
-
-Random Forest
--------------
+## Random Forest
 
 Originated by Leo Breimann
 
-
 ### Decision Trees
 
-
-
-Bayes Optimal Classifier
-------------------------
+## Bayes Optimal Classifier
 
 
