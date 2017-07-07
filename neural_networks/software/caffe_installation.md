@@ -1,15 +1,12 @@
 # Installing Caffe
 
-
-My first install on Jardines used Homebrew python 2 and Accelerate, opencv2?
-
-Then attempt to use anaconda with python 3, openblas, opencv3.
-
-
 ## General Notes
 
-
 ### As of 4/2017 the Caffe site outlines these steps:
+
+I used Anaconda Python 3, OpenBLAS, OpenCV3.
+
+#### OpenCV Instructions
 
     brew install -vd snappy leveldb gflags glog szip lmdb
 
@@ -25,51 +22,57 @@ and change the lines that look like the two lines below to exactly the two lines
     -DPYTHON_LIBRARY=#{py_prefix}/lib/libpython2.7.dylib
     -DPYTHON_INCLUDE_DIR=#{py_prefix}/include/python2.7
 
-Note: no need to modify opencv formulat, at least not with with-python3 and without-numpy
-
 If using Anaconda Python, HDF5 is bundled and the hdf5 formula can be skipped.
 
-    # with Python pycaffe needs dependencies built from source
-    brew install --build-from-source --with-python -vd protobuf
-    brew install --build-from-source -vd boost boost-python
-
-Note:
-
-* current protobuf (3.2.0) does not have `--with-python` flag, only `--with-python3` and `--without-python`!
-* current opencv (2.4.13.2 and 3.2.0) have `--without-numpy` (seems like what I want, but effect unclear from looking at formula) and `--without-python` option and opencv3 has additional `--with-python3` and `--with-contrib` (possibly good). Opencv does not seem able to build for python2 and python3 simultaneously (but other formula may be).
-
-
-### And I did...
+#### But I did
 
 Install Caffe. Other dependencies already installed, and brew hdf5 not required since Anaconda provides it.
 
     brew install --build-from-source opencv3 --without-python --with-python3 --without-numpy
 
-Note: Strange, but seemed to need `--without-python` to not complain about building for both versions. `--without-numpy` needed to prevent Hombrew from installing its own numpy.
+This builds `/usr/local/opt/opencv3/lib/python3.5/site-packages/cv2.cpython-35m-darwin.so` (actually `/usr/local/Cellar/opencv3/3.2.0/...`). Some suggest renaming to `cv2.so` but I don't think you have to due to new naming standards.
 
-This builds `/usr/local/opt/opencv3/lib/python3.5/site-packages/cv2.cpython-35m-darwin.so` (actually `/usr/local/Cellar/opencv3/3.2.0/...`). Some suggest renaming to cv2.so
+Note:
+
+* no need to modify opencv formula, at least not with `--with-python3` and `--without-numpy`
+* Strange, but seemed to need `--without-python` to not complain about building for both versions. `--without-numpy` needed to prevent Hombrew from installing its own numpy.
+* current opencv (2.4.13.2 and 3.2.0) have `--without-numpy` (seems like what I want, but effect unclear from looking at formula) and `--without-python` option and opencv3 has additional `--with-python3` and `--with-contrib` (possibly good). Opencv does not seem able to build for python2 and python3 simultaneously (but other formula may be).
+
+#### Dependency Instructions
+
+    # with Python pycaffe needs dependencies built from source
+    brew install --build-from-source --with-python -vd protobuf
+    brew install --build-from-source -vd boost boost-python
+
+#### But I did
 
     brew install --build-from-source --with-python3 protobuf
     brew install --build-from-source boost # don't think source is needed
     brew install --build-from-source --with-python3 boost-python
 
-Note: `--with-python3` implies `--build-from-source`
+Note:
 
-Note: Anaconda does have protobuf, maybe we can use it but Caffe site shows installing with Homebrew.
+* `--with-python3` implies `--build-from-source`
+* current protobuf (3.2.0) does not have `--with-python` flag, only `--with-python3` and `--without-python`!
+* Anaconda does have protobuf, maybe we can use it but Caffe site shows installing with Homebrew.
+
+#### Compilation I did
+
+Edit `Makefile.config`, incl uncomment `CPU_ONLY := 1`.
 
 Build caffe:
 
     make all -j4
     make test
-    mke runtest
+    make runtest
 
-Note: builds go to build directory (actually symlink to .build_release)
+Note: builds go to `build` directory (actually symlink to `.build_release`)
 
-but the following barf:
+Build was successfule, but the following barf:
 
-    make runtest # barfs
+    make runtest                          # barfs
     .build_release/tools/test_all.testbin # barfs
-    .build_release/tools/caffe # barfs
+    .build_release/tools/caffe            # barfs
 
 With the error:
 
@@ -112,11 +115,11 @@ ref [Compiling Caffe under Mac OS X with Anaconda dependencies](http://akmetiuk.
 
 Now with everything working:
 
-    make pycaffe # builds to caffe/python
+    make pycaffe    # builds to caffe/python
     make distribute # packages everything into distribute dir
 
 
-May instructions suggest setting `PYTHONPATH`, but I added `~/opt/caffe/distribute/python` to my `homebrew.pth` (in `.local/...`)
+Some instructions suggest setting `PYTHONPATH`, but I added `~/opt/caffe/distribute/python` to my `homebrew.pth` (in `.local/...`)
 
 Still I get the following error on `import caffe`:
 
@@ -129,10 +132,6 @@ So I had to
     install_name_tool -add_rpath ~/opt/caffe/lib caffe/distribute/python/_caffe.so
     
 and then it worked.
-
-
-
-
 
 ## Helpful Tips
 
@@ -151,24 +150,18 @@ And maybe also `dlopen`
 
 remember..`env`/`printenv`/`set`
 
+## Links
 
+* [Installing Caffe the right way](http://installing-caffe-the-right-way.wikidot.com/)
+* [Deepdream Installation](https://gist.github.com/robertsdionne/f58a5fc6e5d1d5d2f798) script
 
----
+## Previous Caffe Installation on Jardines
 
-# Caffe Installation
-
-- [Installing Caffe the right way](http://installing-caffe-the-right-way.wikidot.com/)
-
-- [Deepdream Installation](https://gist.github.com/robertsdionne/f58a5fc6e5d1d5d2f798) script
-
-
-## Install Caffe on Jardines
-
-This previous install used brew python and Accelerate I think.
+My first install on Jardines used Homebrew Python 2 and Accelerate, and OpenCV2.
 
 ### 8/2016
 
-Install Cafee using home-brew python, follow directions on caffe site to the T.
+Install Caffe using homebrew python, follow directions on caffe site to the T.
 
 Aside, this is how you
 
@@ -184,10 +177,9 @@ etc
     PYTHON_LIB := 
     /usr/local/Cellar/python/2.7.12/Frameworks/Python.framework/Versions/2.7/lib
 
-* 10.9 has vecLib (-framework vecLib)
-* 10.10 has accelerate (-framework accelerate) which has vecLib inside
+* 10.9 has vecLib (`-framework vecLib`)
+* 10.10 has accelerate (`-framework accelerate`) which has vecLib inside
 * 10.11 (El Capitan)
-
 
 ### 12/2016
 
